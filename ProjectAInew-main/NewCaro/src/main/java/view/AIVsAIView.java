@@ -85,14 +85,17 @@ public class AIVsAIView extends JFrame {
                 return;
             }
             // Place Minimax's first move at a random empty cell
-            int firstX, firstY;
-            Random rand = new Random();
-            while (true) {
-                firstX = rand.nextInt(column + 1);
-                firstY = rand.nextInt(row + 1);
-                if (SelectMove.E[firstX][firstY] == 0) break;
-            }
-            final int fx = firstX, fy = firstY;
+            // int firstX, firstY;
+            // Random rand = new Random();
+            // while (true) {
+            //     firstX = rand.nextInt(column + 1);
+            //     firstY = rand.nextInt(row + 1);
+            //     if (SelectMove.E[firstX][firstY] == 0) break;
+            // }
+            // final int fx = firstX, fy = firstY;
+
+            final int fx = column/2, fy = row/2; // Center position for first move
+            
             SwingUtilities.invokeLater(() -> {
                 addAIPoint(fx, fy, 1); // 1 = X
             });
