@@ -79,8 +79,6 @@ public class CalculateDistance {
                 //      5) Đánh các nước tạo thế cờ
                 //      6) Chặn các nước tạo thế cờ của địch
 
-
-
                 //      1) Đánh các nước kết hợp 3,4 hoặc nước 4 chưa bị chặn
                 if (beta == 1 || beta == 2 || beta == 3 ) {
 //                    System.out.println(tmp.getX() + " " + tmp.getY());

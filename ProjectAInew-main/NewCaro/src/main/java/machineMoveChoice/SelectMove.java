@@ -12,7 +12,7 @@ public  class SelectMove {
     public static int startMove = 0;
     public static int locx; //Vị trí máy đánh
     public static int locy; //VỊ trí máy đánh
-    public static int[][] E = new int[25][25];
+    public static int[][] E = new int[28][28];
     public static double[][] map = new double[25][25];
     public static int choosemove;
     public static int choosemove2;

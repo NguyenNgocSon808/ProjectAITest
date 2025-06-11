@@ -53,7 +53,7 @@ public class Begin {
         if(SelectMove.startMove == 2 && branch == 1.12){
             if(SelectMove.E[7][8] == 1){
                 branch = 2.21;
-                return new Point(8,8);
+                return new Point(6,8);
             }else{
                 branch = 2.22;
                 return new Point(7,8);

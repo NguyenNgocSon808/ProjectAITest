@@ -37,8 +37,8 @@ public class View extends JFrame implements ActionListener {
         pn.setLayout(new GridLayout(column+1, row+1));
         for (int i = 0; i <= column + 1; i++)
             for (int j = 0; j <= row + 1; j++) {
-                b[i][j] = new JButton(i +" " + j);
-                b[i][j].setActionCommand(i + " " + j);
+                b[i][j] = new JButton();
+                b[i][j].setActionCommand(i + " " + j); // Lưu tọa độ nút
                 b[i][j].setBackground(background_cl);
                 b[i][j].setFont(new Font("Arial", Font.BOLD, 18));
                 b[i][j].setForeground(Color.lightGray);
@@ -70,107 +70,58 @@ public class View extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         undo_bt.setEnabled(true);
 
-        if(SelectMove.turn %1 == 0){
-//           b[7][7].setText("O");
-//           b[7][7].setForeground(y_cl);
-//           b[7][7].setFont(new Font("Arial", Font.BOLD, 24));
-//           tick[7][7] = false;
-//           SelectMove.E[7][7] = 2;
- //           Các vị trí với "O" (số 2)
-            int[][] oPositions = {
-                    //Test 1
-//                    {4, 2}, {5, 2}, {9, 3}, {6, 4}, {8, 4}, {5, 5}, {7, 5}, {10, 5},
-//                    {7, 6}, {8, 6}, {10, 7}, {9, 8},{7,11},
-//                    {7,4},{6,5},
-//                    {10,16}
-                    //Test 2
-//                    {7,7},{7,8},{6,8},{8,8},{7,9},{6,9},{5,9}
-                    //Test 3
-            //        {7,10},{8,10},{8,11},{9,9},{9,10},{9,11},{10,8}
-
-            };
-
-// Các vị trí với "X" (số 1)
-            int[][] xPositions = {
-                    //Test 1
-//                    {7, 2}, {5, 3}, {6, 3}, {10, 2}, {9, 4}, {8, 5}, {9, 6}, {3, 7},
-//                    {8, 7}, {9, 7}, {10, 11}, {7, 13}, {8, 11}, {9, 11},
-//                    {6,6},{7,7},
-//                    {8,14},{9,15}
-                    //Test 2
-//                    {5,6},{4,7},{8,7},{8,9},{7,10},{4,10}
-                    //Test 3
-                    //{7,7},{7,8},{7,9},{6,11},{10,10},{9,12}
-            };
-
-
-// Cập nhật bảng với giá trị "O" và "X"
-            for (int i = 0; i < oPositions.length; i++) {
-                int row = oPositions[i][0];
-                int col = oPositions[i][1];
-                b[row][col].setText("O");
-                b[row][col].setForeground(y_cl);
-                b[row][col].setFont(new Font("Arial", Font.BOLD, 24));
-                tick[row][col] = false;
-                SelectMove.E[row][col] = 2; // O là số 2
-            }
-
-            for (int i = 0; i < xPositions.length; i++) {
-                int row = xPositions[i][0];
-                int col = xPositions[i][1];
-                b[row][col].setText("X");
-                b[row][col].setForeground(x_cl); // Bạn có thể thay đổi màu nếu cần
-                b[row][col].setFont(new Font("Arial", Font.BOLD, 24));
-                tick[row][col] = false;
-                SelectMove.E[row][col] = 1; // X là số 1
-            }
-
-
-
-
+        if(SelectMove.turn % 2 == 1){
+           b[7][7].setText("O");
+           b[7][7].setForeground(y_cl);
+           b[7][7].setFont(new Font("Arial", Font.BOLD, 24));
+           tick[7][7] = false;
+           SelectMove.E[7][7] = 2; // O là số 2
+           lb.setText("Lượt Của X"); // Cập nhật hiển thị lượt tiếp theo
         }
     }
-    public void addPoint(int i, int j) {
+    // Hiển thị cửa sổ thông báo kết quả (thắng/thua)
+    private void showResultDialog(boolean isWin) {
+        frame = new JFrame();
+        frame.setSize(300, 150);
+        frame.setLayout(new BorderLayout());
+        frame.setLocationRelativeTo(null); // Hiển thị giữa màn hình
+        frame.setVisible(true);
+        // Thêm nhãn thông báo
+        String message = isWin ? "You Win!" : "You Lose!";
+        JLabel label = new JLabel(message, SwingConstants.CENTER);
+        label.setFont(new Font("Arial", Font.BOLD, 24));
+        frame.add(label, BorderLayout.CENTER);
+        // Tạo panel chứa 2 nút
+        JPanel buttonPanel = new JPanel();
+        JButton restartButton = new JButton("Restart");
+        JButton quitButton = new JButton("Quit");
+        restartButton.addActionListener(this);
+        quitButton.addActionListener(this);
+        buttonPanel.add(restartButton);
+        buttonPanel.add(quitButton);
+        frame.add(buttonPanel, BorderLayout.SOUTH);
+    }
 
+    public void addPoint(int i, int j) {
         b[locx][locy].setBackground(background_cl);
-        if(SelectMove.E[i][j] != 0){ // chống đánh vào ô dã đánh
+        if(SelectMove.E[i][j] != 0){ // chống đánh vào ô đã đánh
             return;
         }
         SelectMove.E[i][j] = 1;
         Undo[i][j] = SelectMove.startMove;
         b[i][j].setText("X");
-
         b[i][j].setForeground(x_cl);
         b[i][j].setFont(new Font("Arial", Font.BOLD, 24));
         tick[i][j] = false;
         if(Check.checkWin(i,j,E,1)){
             System.out.println("check");
-            frame = new JFrame(); // Sửa: dùng biến instance, không tạo biến cục bộ
-            frame.setSize(300, 150);
-            frame.setLayout(new BorderLayout());
-            frame.setLocationRelativeTo(null); // Hiển thị giữa màn hình
-            frame.setVisible(true);
-            // Thêm nhãn thông báo
-            JLabel label = new JLabel("You Have Win!", SwingConstants.CENTER);
-            label.setFont(new Font("Arial", Font.BOLD, 24));
-            frame.add(label, BorderLayout.CENTER);
-
-            // Tạo panel chứa 2 nút
-            JPanel buttonPanel = new JPanel();
-            JButton restartButton = new JButton("Restart");
-            JButton quitButton = new JButton("Quit");
-            restartButton.addActionListener(this);
-            quitButton.addActionListener(this);
-            buttonPanel.add(restartButton);
-            buttonPanel.add(quitButton);
-            frame.add(buttonPanel, BorderLayout.SOUTH);
+            showResultDialog(true); // Thắng
             for (int k = 0; k < 20; k++) {
                 for (int l = 0; l < 20; l++) {
                     SelectMove.E[k][l] = 1;
                 }
             }
         }
-        
         lb.setText("Lượt Của O");
         lb.setFont(new Font("Arial", Font.BOLD, 24));
         SelectMove.machineTurn();
@@ -193,6 +144,7 @@ public class View extends JFrame implements ActionListener {
             JLabel label = new JLabel("You Have Lose!", SwingConstants.CENTER);
             label.setFont(new Font("Arial", Font.BOLD, 24));
             frame.add(label, BorderLayout.CENTER);
+
             // Tạo panel chứa 2 nút
             JPanel buttonPanel = new JPanel();
             JButton restartButton = new JButton("Restart");
@@ -200,6 +152,7 @@ public class View extends JFrame implements ActionListener {
             JButton quitButton = new JButton("Quit");
             quitButton.addActionListener(this);
             buttonPanel.add(restartButton);
+
             buttonPanel.add(quitButton);
             frame.add(buttonPanel, BorderLayout.SOUTH);
             for (int k = 0; k < 20; k++) {
@@ -209,15 +162,17 @@ public class View extends JFrame implements ActionListener {
             }
         }
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("New Game") || e.getActionCommand().equals("Restart")) {
-            for (int i = 0; i <= 20; i++) {
-                for (int j = 0; j <= 20; j++) {
+            for (int i = 0; i < 20; i++) {
+                for (int j = 0; j < 20; j++) {
                     SelectMove.E[i][j] = 0;
                 }
             }
-            turn +=1;
+            // Đổi người đánh trước sau mỗi ván
+            turn += 1;
             startMove = 0;
             if(frame != null){
                 frame.setVisible(false);
@@ -225,6 +180,19 @@ public class View extends JFrame implements ActionListener {
             ContinuousATK.ContinuousATK2.clear();
             ContinuousATK.ContinuousATK.clear();
             SelectMove.check = 0;
+            // Nếu turn chẵn thì AI (X) đi trước, lẻ thì người chơi (X) đi trước
+            if(turn % 2 == 0) {
+                // Máy (X) đi trước
+                b[7][7].setText("X");
+                b[7][7].setForeground(x_cl);
+                b[7][7].setFont(new Font("Arial", Font.BOLD, 24));
+                tick[7][7] = false;
+                SelectMove.E[7][7] = 1; // X là số 1
+                lb.setText("Lượt Của O");
+            } else {
+                // Người chơi (X) đi trước
+                lb.setText("Lượt Của X");
+            }
             new View("GAME DEMO");
             this.dispose();
         } else if (e.getActionCommand().equals("Exit") || e.getActionCommand().equals("Quit")) {

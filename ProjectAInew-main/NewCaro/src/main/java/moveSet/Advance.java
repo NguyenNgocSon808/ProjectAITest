@@ -65,7 +65,7 @@ public class Advance {
             }
         }
         for (int i = x + 1; i < x + 6; i++) {
-            if (i >= 0) {
+            if (i <= 20) {
                 if (E[i][y] == a) {
                     rowright += 1;
                 }
@@ -204,7 +204,7 @@ public class Advance {
             }
         }
         for (int i = y + 1; i < y + 6; i++) {
-            if (i >= 0) {
+            if (i <= 20) {
                 if (E[x][i] == a) {
                     rowright += 1;
                 }
@@ -428,7 +428,7 @@ public class Advance {
         spacecount = 0;
         //cheo phu
         for (int i = 1; i < 6; i++) {
-            if (x - i >= 0) {
+            if (x - i >= 0 && y + i <= 20) {
                 if (E[x - i][y + i] == a) {
                     rowleft += 1;
                 }
@@ -450,7 +450,7 @@ public class Advance {
             }
         }
         for (int i = 1; i < 6; i++) {
-            if (y - i >= 0) {
+            if (y - i >= 0 && x + i <= 20) {
                 if (E[x + i][y - i] == a) {
                     rowright += 1;
                 }

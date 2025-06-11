@@ -84,6 +84,7 @@ public class AIVsAIView extends JFrame {
                 Thread.currentThread().interrupt();
                 return;
             }
+
             // Place Minimax's first move at a random empty cell
             // int firstX, firstY;
             // Random rand = new Random();
@@ -105,7 +106,7 @@ public class AIVsAIView extends JFrame {
             while (moves < maxMoves && winner == 0) {
                 // Add delay between moves
                 try {
-                    Thread.sleep(100); // Wait 2 seconds between moves
+                    Thread.sleep(500); // Wait 2 seconds between moves
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     return;
@@ -121,7 +122,7 @@ public class AIVsAIView extends JFrame {
                             int[] mv = minimax.calculateNextMove(4);
                             if (mv != null) {
                                 addAIPoint(mv[1], mv[0], 1); // 1 = X
-                                if (Check.checkWin(mv[0], mv[1], SelectMove.E, 1)) {
+                                if (Check.checkWin(mv[1], mv[0], SelectMove.E, 1)) {
                                     showGameResult(1); // X wins
                                 }
                             }
